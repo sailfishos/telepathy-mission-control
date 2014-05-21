@@ -54,6 +54,7 @@ struct _McdConnectivityMonitorPrivate {
 
 #ifdef HAVE_CONNMAN
   DBusGProxy *proxy;
+  guint connman_ready_timer;
 #endif
 
 #ifdef HAVE_UPOWER
@@ -147,6 +148,24 @@ connectivity_monitor_nm_state_change_cb (NMClient *client,
 #endif
 
 #ifdef HAVE_CONNMAN
+/* Number of seconds after which to treat a "ready" state as if the online
+ * check succeeded. This is needed because the online check may fail even
+ * when connectivity is available. We cannot treat "ready" as a connected
+ * state, because it's important to reconnect when there is a "online" ->
+ * "ready" -> "online" state change. */
+#define CONNMAN_READY_TIMEOUT_SEC 10
+
+static gboolean
+connectivity_monitor_connman_ready_timeout_cb (gpointer user_data)
+{
+  McdConnectivityMonitor *connectivity_monitor = MCD_CONNECTIVITY_MONITOR (user_data);
+  DEBUG ("Setting connectivity to connected after %d seconds in 'ready' state",
+          CONNMAN_READY_TIMEOUT_SEC);
+  connectivity_monitor_set_connected (connectivity_monitor, TRUE);
+  connectivity_monitor->priv->connman_ready_timer = 0;
+  return G_SOURCE_REMOVE;
+}
+
 static void
 connectivity_monitor_connman_state_changed (DBusGProxy *proxy,
     const gchar *new_state,
@@ -160,10 +179,21 @@ connectivity_monitor_connman_state_changed (DBusGProxy *proxy,
   if (!priv->use_conn)
     return;
 
-  new_connected = (!tp_strdiff (new_state, "online")
-                   || !tp_strdiff (new_state, "ready"));
-
+  new_connected = (!tp_strdiff (new_state, "online"));
   DEBUG ("New ConnMan network state %s", new_state);
+
+  if (!tp_strdiff (new_state, "ready"))
+  {
+      priv->connman_ready_timer = g_timeout_add_seconds (CONNMAN_READY_TIMEOUT_SEC,
+          connectivity_monitor_connman_ready_timeout_cb, connectivity_monitor);
+      return;
+  }
+  else if (priv->connman_ready_timer > 0)
+  {
+      DEBUG ("Stopping ConnMan ready timer due to state change");
+      g_source_remove (priv->connman_ready_timer);
+      priv->connman_ready_timer = 0;
+  }
 
   connectivity_monitor_set_connected (connectivity_monitor, new_connected);
 }
