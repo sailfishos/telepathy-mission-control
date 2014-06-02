@@ -7,7 +7,6 @@ Group:      System/Libraries
 License:    LGPLv2
 URL:        http://mission-control.sourceforge.net/
 Source0:    http://telepathy.freedesktop.org/releases/telepathy-mission-control/%{name}-%{version}.tar.gz
-Source1:    mktests.sh
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(dbus-1) >= 0.95
