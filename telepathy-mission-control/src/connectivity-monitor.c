@@ -186,7 +186,6 @@ connectivity_monitor_connman_state_changed (DBusGProxy *proxy,
   {
       priv->connman_ready_timer = g_timeout_add_seconds (CONNMAN_READY_TIMEOUT_SEC,
           connectivity_monitor_connman_ready_timeout_cb, connectivity_monitor);
-      return;
   }
   else if (priv->connman_ready_timer > 0)
   {
