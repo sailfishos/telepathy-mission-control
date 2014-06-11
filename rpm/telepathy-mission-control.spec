@@ -88,6 +88,9 @@ rm -rf %{buildroot}
 %fdupes %{buildroot}/%{_includedir}
 install -m 0644 tests/tests.xml $RPM_BUILD_ROOT/opt/tests/telepathy-mission-control/tests.xml
 install -m 0644 tests/README $RPM_BUILD_ROOT/opt/tests/telepathy-mission-control/README
+
+install -d %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/
+ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
 # << install post
 
 %post -p /sbin/ldconfig
@@ -100,6 +103,8 @@ install -m 0644 tests/README $RPM_BUILD_ROOT/opt/tests/telepathy-mission-control
 %doc COPYING AUTHORS
 %{_bindir}/*
 %{_datadir}/dbus-1/services/*.service
+%{_libdir}/systemd/user/mission-control-5.service
+%{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
 %{_libdir}/libmission-control-plugins.so.*
 %{_libexecdir}/mission-control-5
 ## --disable-conn-setting
