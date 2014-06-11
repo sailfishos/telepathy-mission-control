@@ -73,6 +73,7 @@ stamp-*
 /server/mission-control-5.8
 /server/org.freedesktop.Telepathy.AccountManager.service
 /server/org.freedesktop.Telepathy.MissionControl5.service
+/server/mission-control-5.service
 tags
 TAGS
 /telepathy-mission-control-5*
