@@ -54,6 +54,14 @@ The %{name}-devel package contains libraries and header
 files for developing applications that use %{name}.
 
 
+%package doc
+Summary:   Documentation for %{name}
+Group:     Documentation
+Requires:  %{name} = %{version}-%{release}
+
+%description doc
+Man pages for %{name}.
+
 %prep
 %setup -q -n %{name}-%{version}/telepathy-mission-control
 
@@ -77,11 +85,14 @@ rm -rf %{buildroot}
 
 %fdupes %{buildroot}/%{_datadir}/gtk-doc/
 %fdupes %{buildroot}/%{_includedir}
-install -m 0644 tests/tests.xml $RPM_BUILD_ROOT/opt/tests/telepathy-mission-control/tests.xml
-install -m 0644 tests/README $RPM_BUILD_ROOT/opt/tests/telepathy-mission-control/README
+install -m 0644 tests/tests.xml %{buildroot}/opt/tests/telepathy-mission-control/tests.xml
+install -m 0644 tests/README %{buildroot}/opt/tests/telepathy-mission-control/README
 
 install -d %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/
 ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
+
+mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
+install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} AUTHORS ChangeLog
 
 %post -p /sbin/ldconfig
 
@@ -89,7 +100,7 @@ ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-sess
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING AUTHORS
+%license COPYING
 %{_bindir}/*
 %{_datadir}/dbus-1/services/*.service
 %{_libdir}/systemd/user/mission-control-5.service
@@ -99,15 +110,17 @@ ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-sess
 
 %files tests
 %defattr(-,root,root,-)
-/opt/tests/telepathy-mission-control/*
+/opt/tests/telepathy-mission-control
 
 %files devel
 %defattr(-,root,root,-)
-%doc ChangeLog
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libmission-control-plugins.so
+
+%files doc
+%defattr(-,root,root,-)
 %{_mandir}/man1/mc-tool.1.*
 %{_mandir}/man1/mc-wait-for-name.1.*
 %{_mandir}/man8/mission-control-5.8.*
-
+%{_docdir}/%{name}-%{version}
