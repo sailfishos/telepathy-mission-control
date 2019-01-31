@@ -7,6 +7,7 @@ Group:      System/Libraries
 License:    LGPLv2.1 and LGPLv2.1+
 URL:        http://telepathy.freedesktop.org/wiki/Mission_Control/
 Source0:    %{name}-%{version}.tar.gz
+Source1:    %{name}.privileges
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(dbus-1) >= 0.95
@@ -94,6 +95,9 @@ ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-sess
 mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
 install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} AUTHORS ChangeLog
 
+mkdir -p %{buildroot}%{_datadir}/mapplauncherd/privileges.d
+install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
+
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
@@ -103,6 +107,7 @@ install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} AUTHORS ChangeLog
 %license COPYING
 %{_bindir}/*
 %{_datadir}/dbus-1/services/*.service
+%{_datadir}/mapplauncherd/privileges.d/*
 %{_libdir}/systemd/user/mission-control-5.service
 %{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
 %{_libdir}/libmission-control-plugins.so.*
