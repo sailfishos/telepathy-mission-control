@@ -98,6 +98,9 @@ install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} AUTHORS ChangeLog
 mkdir -p %{buildroot}%{_datadir}/mapplauncherd/privileges.d
 install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
 
+# Plugin directory
+mkdir -p %{buildroot}%{_libdir}/mission-control-plugins.0
+
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
