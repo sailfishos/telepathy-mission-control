@@ -113,7 +113,7 @@ install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
 %{_libdir}/libmission-control-plugins.so.*
 %{_libexecdir}/mission-control-5
 # Own mission control plugins dir.
-%{dir} %{_libdir}/mission-control-plugins.0
+%dir %{_libdir}/mission-control-plugins.0
 
 %files tests
 %defattr(-,root,root,-)
