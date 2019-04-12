@@ -10,6 +10,7 @@ Source0:    %{name}-%{version}.tar.gz
 Source1:    %{name}.privileges
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
+Requires:   mapplauncherd
 BuildRequires:  pkgconfig(dbus-1) >= 0.95
 BuildRequires:  pkgconfig(dbus-glib-1) >= 0.82
 BuildRequires:  pkgconfig(telepathy-glib) >= 0.19.0

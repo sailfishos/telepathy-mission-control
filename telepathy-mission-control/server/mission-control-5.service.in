@@ -4,7 +4,7 @@ After=dbus.socket pre-user-session.target
 Requires=dbus.socket
 
 [Service]
-ExecStart=@libexecdir@/mission-control-5
+ExecStart=/usr/bin/invoker --type=generic @libexecdir@/mission-control-5
 Type=dbus
 BusName=org.freedesktop.Telepathy.MissionControl5
 
