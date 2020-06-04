@@ -3,7 +3,6 @@ Name:       telepathy-mission-control
 Summary:    Central control for Telepathy connection manager
 Version:    5.15.0
 Release:    1
-Group:      System/Libraries
 License:    LGPLv2.1 and LGPLv2.1+
 URL:        http://telepathy.freedesktop.org/wiki/Mission_Control/
 Source0:    %{name}-%{version}.tar.gz
@@ -24,6 +23,7 @@ BuildRequires:  python
 BuildRequires:  fdupes
 BuildRequires:  python-twisted
 BuildRequires:  dbus-python
+BuildRequires:  systemd
 
 %description
 Mission Control, or MC, is a Telepathy component providing a way for
@@ -35,7 +35,6 @@ account definitions and credentials.
 
 %package tests
 Summary:    Tests package for %{name}
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 Requires:   python-twisted
 Requires:   dbus-python
@@ -48,7 +47,6 @@ tests.xml for automated testing.
 
 %package devel
 Summary:    Headers files for %{name}
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 
 %description devel
@@ -58,7 +56,6 @@ files for developing applications that use %{name}.
 
 %package doc
 Summary:   Documentation for %{name}
-Group:     Documentation
 Requires:  %{name} = %{version}-%{release}
 
 %description doc
@@ -69,6 +66,7 @@ Man pages for %{name}.
 
 %build
 %autogen --disable-static \
+--libdir=%{_libdir} \
 --disable-gtk-doc \
 --with-accounts-cache-dir=/tmp \
 --disable-Werror \
@@ -90,8 +88,8 @@ rm -rf %{buildroot}
 install -m 0644 tests/tests.xml %{buildroot}/opt/tests/telepathy-mission-control/tests.xml
 install -m 0644 tests/README %{buildroot}/opt/tests/telepathy-mission-control/README
 
-install -d %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/
-ln -s ../mission-control-5.service %{buildroot}%{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
+install -d %{buildroot}%{_userunitdir}/user-session.target.wants/
+ln -s ../mission-control-5.service %{buildroot}%{_userunitdir}/user-session.target.wants/mission-control-5.service
 
 mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
 install -m0644 -t %{buildroot}%{_docdir}/%{name}-%{version} AUTHORS ChangeLog
@@ -112,8 +110,8 @@ mkdir -p %{buildroot}%{_libdir}/mission-control-plugins.0
 %{_bindir}/*
 %{_datadir}/dbus-1/services/*.service
 %{_datadir}/mapplauncherd/privileges.d/*
-%{_libdir}/systemd/user/mission-control-5.service
-%{_libdir}/systemd/user/user-session.target.wants/mission-control-5.service
+%{_userunitdir}/mission-control-5.service
+%{_userunitdir}/user-session.target.wants/mission-control-5.service
 %{_libdir}/libmission-control-plugins.so.*
 %{_libexecdir}/mission-control-5
 # Own mission control plugins dir.
