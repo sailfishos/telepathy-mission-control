@@ -1,12 +1,17 @@
 Name:       telepathy-mission-control
 
 Summary:    Central control for Telepathy connection manager
-Version:    5.15.0
+Version:    5.16.6
 Release:    1
 License:    LGPLv2.1 and LGPLv2.1+
-URL:        http://telepathy.freedesktop.org/wiki/Mission_Control/
+URL:        https://git.sailfishos.org/mer-core/telepathy-mission-control/
 Source0:    %{name}-%{version}.tar.gz
 Source1:    %{name}.privileges
+Patch0:     0001-Use-nemo-path-for-installed-tests.patch
+Patch1:     0002-Disable-gtkdoc.patch
+Patch2:     0003-McdSlacker-Revert-use-of-org.gnome.SessionManager-in.patch
+Patch3:     0004-Add-mktests.sh-script.patch
+Patch4:     0005-Introduce-a-systemd-service-for-mission-control-5.patch
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 Requires:   mapplauncherd
@@ -19,11 +24,12 @@ BuildRequires:  pkgconfig(gmodule-no-export-2.0)
 BuildRequires:  pkgconfig(gio-2.0) >= 2.28
 BuildRequires:  pkgconfig(mce)
 BuildRequires:  libxslt
-BuildRequires:  python
 BuildRequires:  fdupes
-BuildRequires:  python-twisted
-BuildRequires:  dbus-python
 BuildRequires:  systemd
+# To build tests
+BuildRequires:  python3-base
+BuildRequires:  python3-twisted
+BuildRequires:  dbus-python3
 
 %description
 Mission Control, or MC, is a Telepathy component providing a way for
@@ -36,9 +42,10 @@ account definitions and credentials.
 %package tests
 Summary:    Tests package for %{name}
 Requires:   %{name} = %{version}-%{release}
-Requires:   python-twisted
-Requires:   dbus-python
-Requires:   pygobject2
+Requires:   python3-base
+Requires:   python3-twisted
+Requires:   dbus-python3
+Requires:   python3-gobject
 
 %description tests
 The %{name}-tests package contains tests and
@@ -62,7 +69,7 @@ Requires:  %{name} = %{version}-%{release}
 Man pages for %{name}.
 
 %prep
-%setup -q -n %{name}-%{version}/telepathy-mission-control
+%autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
 %autogen --disable-static \
