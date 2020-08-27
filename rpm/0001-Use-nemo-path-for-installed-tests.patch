@@ -1,0 +1,29 @@
+From 6cdb1f6682631ec4830656e16774db0ceb8f15e2 Mon Sep 17 00:00:00 2001
+From: John Brooks <john.brooks@jollamobile.com>
+Date: Mon, 19 May 2014 07:20:19 -0600
+Subject: [PATCH] Use nemo path for installed tests
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 4289f333..ceacae81 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -130,7 +130,7 @@ if test x$installed_tests = xyes; then
+ fi
+ AM_CONDITIONAL([ENABLE_INSTALLED_TESTS], [test "x$installed_tests" = xyes])
+ 
+-mctestsdir=${libdir}/telepathy-mission-control-tests
++mctestsdir=/opt/tests/telepathy-mission-control
+ AC_SUBST(mctestsdir)
+ 
+ AC_ARG_WITH([accounts_dir], [AS_HELP_STRING([--with-accounts-dir=<path>],[Directory in which accounts were previously stored])])
+-- 
+2.26.2
+

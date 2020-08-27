@@ -1,0 +1,51 @@
+From 448f4a66eaee9a411142a43921647e6844cb4518 Mon Sep 17 00:00:00 2001
+From: John Brooks <john.brooks@jollamobile.com>
+Date: Mon, 19 May 2014 07:22:43 -0600
+Subject: [PATCH] Add mktests.sh script
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
+---
+ tests/twisted/mktests.sh | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+ create mode 100755 tests/twisted/mktests.sh
+
+diff --git a/tests/twisted/mktests.sh b/tests/twisted/mktests.sh
+new file mode 100755
+index 00000000..43cf593d
+--- /dev/null
++++ b/tests/twisted/mktests.sh
+@@ -0,0 +1,28 @@
++#!/bin/sh
++
++cat <<EOF
++<?xml version="1.0" encoding="UTF-8"?>
++<testdefinition version="1.0">
++    <suite name="telepathy-mission-control-tests">
++        <description>Telepathy Mission Control tests</description>
++        <set name="telepathy-mission-control-tests-set">
++        <pre_steps>
++            <step>rm -rf /tmp/telepathy-mission-control-tests</step>
++        </pre_steps>
++EOF
++
++for suite in $(cat tests/twisted/mc-twisted-tests.list)
++do
++    suite_name=$(echo $suite|sed 's/\//_/')
++    cat <<EOF
++        <case name="$suite_name">
++            <step>/opt/tests/telepathy-mission-control/twisted/run-test.sh $suite</step>
++        </case>
++EOF
++done
++
++cat <<EOF
++        </set>
++    </suite>
++</testdefinition>
++EOF
+-- 
+2.26.2
+
