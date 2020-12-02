@@ -3,7 +3,7 @@ Name:       telepathy-mission-control
 Summary:    Central control for Telepathy connection manager
 Version:    5.16.6
 Release:    1
-License:    LGPLv2.1 and LGPLv2.1+
+License:    LGPLv2 and LGPLv2+
 URL:        https://git.sailfishos.org/mer-core/telepathy-mission-control/
 Source0:    %{name}-%{version}.tar.gz
 Source1:    %{name}.privileges
