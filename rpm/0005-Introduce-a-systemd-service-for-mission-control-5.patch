@@ -1,4 +1,4 @@
-From 498dad21c0b5d04afe034bc29cdb922e5d04c61a Mon Sep 17 00:00:00 2001
+From 14401a53cf3b4fcb0c1dea9365685ce10cb660ae Mon Sep 17 00:00:00 2001
 From: John Brooks <john.brooks@jollamobile.com>
 Date: Wed, 11 Jun 2014 06:10:59 -0600
 Subject: [PATCH] Introduce a systemd service for mission-control-5
@@ -57,13 +57,13 @@ index 5be1cdc1..57c5cf4a 100644
  		-e 's![@]libexecdir[@]!$(libexecdir)!' \
 diff --git a/server/mission-control-5.service.in b/server/mission-control-5.service.in
 new file mode 100644
-index 00000000..023c12f0
+index 00000000..88439f31
 --- /dev/null
 +++ b/server/mission-control-5.service.in
 @@ -0,0 +1,12 @@
 +[Unit]
 +Description=Telepathy mission control daemon
-+After=dbus.socket pre-user-session.target
++After=dbus.socket pre-user-session.target lipstick.service
 +Requires=dbus.socket
 +
 +[Service]
@@ -84,5 +84,5 @@ index c137820b..ef9f7979 100644
 +Exec=/bin/false
 +SystemdService=mission-control-5.service
 -- 
-2.26.2
+2.20.1
 
