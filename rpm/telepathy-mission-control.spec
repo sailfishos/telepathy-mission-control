@@ -23,6 +23,7 @@ BuildRequires:  pkgconfig(gobject-2.0)
 BuildRequires:  pkgconfig(gmodule-no-export-2.0)
 BuildRequires:  pkgconfig(gio-2.0) >= 2.28
 BuildRequires:  pkgconfig(mce)
+BuildRequires:  pkgconfig(systemd)
 BuildRequires:  libxslt
 BuildRequires:  fdupes
 BuildRequires:  systemd
