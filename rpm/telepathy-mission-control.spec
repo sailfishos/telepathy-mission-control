@@ -26,7 +26,6 @@ BuildRequires:  pkgconfig(mce)
 BuildRequires:  pkgconfig(systemd)
 BuildRequires:  libxslt
 BuildRequires:  fdupes
-BuildRequires:  systemd
 # To build tests
 BuildRequires:  python3-base
 BuildRequires:  python3-twisted
