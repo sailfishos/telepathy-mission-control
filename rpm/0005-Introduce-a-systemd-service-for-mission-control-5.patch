@@ -1,4 +1,4 @@
-From 14401a53cf3b4fcb0c1dea9365685ce10cb660ae Mon Sep 17 00:00:00 2001
+From 0fafeb37fb8e64283e0abaa21e528ce59002fdce Mon Sep 17 00:00:00 2001
 From: John Brooks <john.brooks@jollamobile.com>
 Date: Wed, 11 Jun 2014 06:10:59 -0600
 Subject: [PATCH] Introduce a systemd service for mission-control-5
@@ -10,12 +10,13 @@ This is useful to ensure that mission-control-5 is always started at the
 right time, and restarted automatically if it fails.
 
 Signed-off-by: Tomi Leppänen <tomi.leppanen@jolla.com>
+Signed-off-by: Ville Nummela <ville.nummela@jolla.com>
 ---
- .gitignore                                           |  1 +
- server/Makefile.am                                   |  5 +++++
- server/mission-control-5.service.in                  | 12 ++++++++++++
- ...g.freedesktop.Telepathy.AccountManager.service.in |  3 ++-
- 4 files changed, 20 insertions(+), 1 deletion(-)
+ .gitignore                                         |  1 +
+ server/Makefile.am                                 |  5 +++++
+ server/mission-control-5.service.in                | 14 ++++++++++++++
+ ...freedesktop.Telepathy.AccountManager.service.in |  3 ++-
+ 4 files changed, 22 insertions(+), 1 deletion(-)
  create mode 100644 server/mission-control-5.service.in
 
 diff --git a/.gitignore b/.gitignore
@@ -57,19 +58,21 @@ index 5be1cdc1..57c5cf4a 100644
  		-e 's![@]libexecdir[@]!$(libexecdir)!' \
 diff --git a/server/mission-control-5.service.in b/server/mission-control-5.service.in
 new file mode 100644
-index 00000000..88439f31
+index 00000000..ad989a62
 --- /dev/null
 +++ b/server/mission-control-5.service.in
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,14 @@
 +[Unit]
 +Description=Telepathy mission control daemon
 +After=dbus.socket pre-user-session.target lipstick.service
 +Requires=dbus.socket
 +
 +[Service]
-+ExecStart=@bindir@/invoker --type=generic @libexecdir@/mission-control-5
++ExecStart=@bindir@/invoker --type=generic --keep-oom-score @libexecdir@/mission-control-5
 +Type=dbus
 +BusName=org.freedesktop.Telepathy.AccountManager
++Restart=always
++OOMScoreAdjust=-500
 +
 +[Install]
 +WantedBy=user-session.target
@@ -84,5 +87,5 @@ index c137820b..ef9f7979 100644
 +Exec=/bin/false
 +SystemdService=mission-control-5.service
 -- 
-2.20.1
+2.25.1
 
