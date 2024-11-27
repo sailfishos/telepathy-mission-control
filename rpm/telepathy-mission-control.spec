@@ -4,7 +4,7 @@ Summary:    Central control for Telepathy connection manager
 Version:    5.16.6
 Release:    1
 License:    LGPLv2 and LGPLv2+
-URL:        https://git.sailfishos.org/mer-core/telepathy-mission-control/
+URL:        https://github.com/sailfishos/telepathy-mission-control
 Source0:    %{name}-%{version}.tar.gz
 Source1:    %{name}.privileges
 Patch0:     0001-Use-nemo-path-for-installed-tests.patch
@@ -85,12 +85,11 @@ Man pages for %{name}.
 --enable-installed-tests \
 --disable-gtk-doc
 
-make %{?_smp_mflags}
+%make_build
 
 tests/twisted/mktests.sh > tests/tests.xml
 
 %install
-rm -rf %{buildroot}
 %make_install
 
 %fdupes %{buildroot}/%{_datadir}/gtk-doc/
@@ -115,7 +114,6 @@ mkdir -p %{buildroot}%{_libdir}/mission-control-plugins.0
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
 %license COPYING
 %{_bindir}/*
 %{_datadir}/dbus-1/services/*.service
@@ -128,17 +126,14 @@ mkdir -p %{buildroot}%{_libdir}/mission-control-plugins.0
 %dir %{_libdir}/mission-control-plugins.0
 
 %files tests
-%defattr(-,root,root,-)
 /opt/tests/telepathy-mission-control
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
 %{_libdir}/libmission-control-plugins.so
 
 %files doc
-%defattr(-,root,root,-)
 %{_mandir}/man1/mc-tool.1.*
 %{_mandir}/man1/mc-wait-for-name.1.*
 %{_mandir}/man8/mission-control-5.8.*
